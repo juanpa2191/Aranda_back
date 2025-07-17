@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Application.DTOs;
+using ProductCatalog.Application.Filters;
 using ProductCatalog.Application.Services;
 
 namespace ProductCatalogAPI.API.Controllers
 {
+    [ValidateModel]
     [ApiController]
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase

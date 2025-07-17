@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using ProductCatalog.Application.Filters;
 using ProductCatalog.Application.Services;
 using ProductCatalog.Domain.Interfaces;
 using ProductCatalog.Infrastructure.Data;
+using ProductCatalog.Infrastructure.Middleware;
 using ProductCatalog.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
+});
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidateModelAttribute>();
 });
 
 
@@ -36,6 +43,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
