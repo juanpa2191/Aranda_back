@@ -13,6 +13,7 @@ namespace ProductCatalog.Application.Services
     {
         Task<IEnumerable<ProductoDetalleDto>> GetAllAsync(string? nombre, string? descripcion, string? categoria, string? orden, bool asc);
         Task<ProductoDetalleDto?> GetByIdAsync(int id);
+        Task<List<ProductoDetalleDto>> GetAllAsync();
         Task AddAsync(ProductoDto dto);
         Task UpdateAsync(int id, ProductoDto dto);
         Task DeleteAsync(int id);

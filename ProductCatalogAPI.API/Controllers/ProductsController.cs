@@ -19,21 +19,9 @@ namespace ProductCatalogAPI.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(
-            [FromQuery] string? nombre,
-            [FromQuery] string? descripcion,
-            [FromQuery] string? categoria,
-            [FromQuery] string? orden,
-            [FromQuery] bool asc = true)
+        public async Task<IActionResult> GetAll()
         {
-            var productos = await _productoService.GetAllAsync(nombre, descripcion, categoria, orden, asc);
-            return Ok(productos);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var producto = await _productoService.GetByIdAsync(id);
+            var producto = await _productoService.GetAllAsync();
             if (producto == null)
                 return NotFound();
             return Ok(producto);
@@ -43,7 +31,7 @@ namespace ProductCatalogAPI.API.Controllers
         public async Task<IActionResult> Create([FromBody] ProductoDto dto)
         {
             await _productoService.AddAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = dto.Nombre }, dto); 
+            return CreatedAtAction(nameof(GetAll), new { id = dto.Nombre }, dto); 
         }
 
         [HttpPut("{id}")]

@@ -44,6 +44,20 @@ namespace ProductCatalog.Application.Services
                 CategoriaNombre = producto.Categoria?.Nombre ?? string.Empty
             };
         }
+        public async Task<List<ProductoDetalleDto>> GetAllAsync()
+        {
+            var producto = await _repo.GetAllWithCategoriaAsync();
+            if (producto == null) return null;
+
+            return producto.Select(p => new ProductoDetalleDto
+            {
+                Id = p.Id,
+                Nombre = p.Nombre,
+                Descripcion = p.Descripcion,
+                ImagenUrl = p.ImagenUrl,
+                CategoriaNombre = p.Categoria.Nombre
+            }).ToList();
+        }
 
         public async Task AddAsync(ProductoDto dto)
         {
@@ -102,6 +116,7 @@ namespace ProductCatalog.Application.Services
                 productos = request.Orden.ToLower() switch
                 {
                     "nombre" => request.Asc ? productos.OrderBy(p => p.Nombre) : productos.OrderByDescending(p => p.Nombre),
+                    "descripcion" => request.Asc ? productos.OrderBy(p => p.Descripcion) : productos.OrderByDescending(p => p.Descripcion),
                     "categoria" => request.Asc ? productos.OrderBy(p => p.Categoria!.Nombre) : productos.OrderByDescending(p => p.Categoria!.Nombre),
                     _ => productos
                 };
